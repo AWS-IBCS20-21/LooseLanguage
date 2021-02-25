@@ -46,7 +46,7 @@ class SearchTime {
 
   }
 
-//
+//partitions the array with pivot
   int partition(int arr[], int low, int high)
   {
       int pivot = arr[high];
@@ -70,6 +70,7 @@ class SearchTime {
       return i+1;
   }
 
+//sorts array (elements higher than pivot on right, lower than pivot on left)
   void sort(int arr[], int low, int high)
   {
       if (low < high)
@@ -85,6 +86,7 @@ class SearchTime {
       }
   }
 
+//prints the array
   static void printArray(int arr[])
   {
       int n = arr.length;
@@ -93,6 +95,7 @@ class SearchTime {
       System.out.println();
   }
 
+//get a random int between 2 numbers (min and max)
   private static int getRandomNumberInRange(int min, int max) {
 
       if (min >= max) {
@@ -103,6 +106,7 @@ class SearchTime {
       return r.nextInt((max - min) + 1) + min;
   }
 
+//main method that currently finds average run time for 50 runs of searching an array of 1mill integers
   public static void main(String[] args) {
     SearchTime sT = new SearchTime();
     double sum = 0;
