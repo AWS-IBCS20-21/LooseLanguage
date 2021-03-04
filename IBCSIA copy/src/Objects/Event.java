@@ -43,6 +43,17 @@ public class Event {
 	public void setDistance(int distance) {
 		this.distance = distance;
 	}
+	
+	public int getIntTime() {
+		String[] stringTime = time.split(":", 3);
+		
+		String time = "";
+		for(int i=0; i<stringTime.length; i++) {
+			time += stringTime[i];
+		}
+		return Integer.parseInt(time);
+		
+	}
 
 
 	public String getTime() {

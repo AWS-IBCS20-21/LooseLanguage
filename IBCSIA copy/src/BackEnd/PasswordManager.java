@@ -51,6 +51,7 @@ public class PasswordManager {
 	*/
     public boolean checkAccount(String firstName, String lastName, char[] pwd_array) {
     	String fullName = firstName + lastName;
+    fullName = fullName.toLowerCase();
 		if (accounts.containsKey(fullName)) {
 			
 			String accessKey = readPassword(pwd_array);

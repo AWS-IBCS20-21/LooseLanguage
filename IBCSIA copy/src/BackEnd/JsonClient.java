@@ -1,11 +1,15 @@
 package BackEnd;
 import java.util.*;
 
-import java.io.FileWriter;
+	import java.io.FileWriter;
+	import java.io.*;
 import java.io.IOException;
 
 import org.json.simple.JSONObject;
-
+import org.json.simple.parser.JSONParser;
+//import org.json.simple.parser.JSONArray;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.ParseException;
 
 import Objects.*;
 
@@ -18,6 +22,24 @@ public class JsonClient {
 	}
 	public ArrayList<Athlete> read(){
 		ArrayList<Athlete> res = new ArrayList<>();
+		JSONParser jsonParser = new JSONParser();
+        try (FileReader reader = new FileReader(this.filepath))
+        {
+            //Read JSON file
+            Object obj = jsonParser.parse(reader);
+           
+            JSONObject a = (JSONObject) obj;
+            res = this.parseTimeLog(a);
+
+            //Iterate over employee array
+ 
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 		return res;
 	}
 	
@@ -51,6 +73,47 @@ public class JsonClient {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	//PROCEDURAL DECOMPOSITION
+	private ArrayList<Athlete> parseTimeLog(JSONObject timeLogs) {
+		ArrayList<Athlete> athletes = new ArrayList<Athlete>();
+		//get athlete object from lsjfsajd
+		for(String athName: (Set<String>)timeLogs.keySet()) {
+			//System.out.print(athName);
+			JSONObject athObject = (JSONObject) timeLogs.get(athName);
+			athletes.add(this.parseAthlete(athName, athObject));
+			
+			
+			
+		}
+		return athletes;
+	 
+		
+	}
+	private Athlete parseAthlete(String name, JSONObject ath) {
+		
+		boolean female = (boolean) ath.get("Gender");
+		String birthday = (String) ath.get("Birthday");
+		
+		Athlete a = new Athlete(name, female, birthday);
+		this.parseTimes(a, (JSONObject)ath.get("Times"));
+		
+		return a;
+	}
+	private void parseTimes(Athlete a, JSONObject time) {
+		for(String key: (Set<String>)time.keySet()) {
+			a.insertEvents(key, this.parseEvent((JSONObject)time.get(key)));
+			
+		}
+	}
+	private Event parseEvent(JSONObject eve) {
+		String date = (String) eve.get("Date");
+		Stroke stroke = Stroke.values()[Integer.valueOf(eve.get("Stroke").toString())];
+		int distance = Integer.valueOf(eve.get("Distance").toString());
+		String time  = (String) eve.get("Time");
+	
+		
+		return new Event(date,stroke, distance, time);
 	}
 }
 
